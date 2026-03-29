@@ -12,7 +12,12 @@ export default defineConfig({
     host: '0.0.0.0',
     port: parseInt(process.env.PORT) || 3000,
     strictPort: false,
-    allowedHosts: 'all',
+    allowedHosts: [
+      'all',
+      'healthcheck.railway.app',
+      '.railway.app',
+      '.up.railway.app',
+    ],
   },
   build: {
     outDir: 'dist',

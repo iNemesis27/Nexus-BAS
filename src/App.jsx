@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
+import { FloorB, FloorG, Floor2, Floor3, FloorR } from "./FloorPlans";
 
 // ── CONSTANTS ──────────────────────────────────────────────────────────────────
 const PROTOCOLS = {
@@ -676,12 +677,37 @@ function Designer({ initialFloor, onBack }) {
             </svg>
           )}
 
-          {/* Floor plan image */}
+          {/* SVG floor plan background */}
+          <div style={{
+            position: "absolute",
+            inset: 0,
+            opacity: 0.28,
+            pointerEvents: "none",
+            zIndex: 0,
+          }}>
+            {floor === "B" && <FloorB />}
+            {floor === "G" && <FloorG />}
+            {floor === "2" && <Floor2 />}
+            {floor === "3" && <Floor3 />}
+            {floor === "R" && <FloorR />}
+          </div>
+
+          {/* Blueprint photo layer — keep at lower opacity */}
           {floorImgs[floor] && (
-            <img src={floorImgs[floor]} alt={`Floor ${floor} plan`}
-              style={{position:"absolute",inset:0,width:"100%",height:"100%",
-                objectFit:"contain",objectPosition:"center",
-                opacity:0.35,pointerEvents:"none",borderRadius:4}}/>
+            <img
+              src={floorImgs[floor]}
+              alt={`Floor ${floor} plan`}
+              style={{
+                position: "absolute",
+                inset: 0,
+                width: "100%",
+                height: "100%",
+                objectFit: "contain",
+                opacity: 0.12,
+                pointerEvents: "none",
+                zIndex: 1,
+              }}
+            />
           )}
 
           {/* Upload prompt when no image */}
@@ -690,7 +716,7 @@ function Designer({ initialFloor, onBack }) {
               style={{position:"absolute",inset:0,display:"flex",flexDirection:"column",
                 alignItems:"center",justifyContent:"center",gap:8,
                 border:"2px dashed #1a3050",borderRadius:6,margin:4,
-                cursor:"pointer",zIndex:0}}
+                cursor:"pointer",zIndex:2}}
               onMouseEnter={e=>e.currentTarget.style.borderColor="#00e5ff44"}
               onMouseLeave={e=>e.currentTarget.style.borderColor="#1a3050"}>
               <div style={{fontSize:32,opacity:0.2}}>🗺</div>
@@ -735,7 +761,7 @@ function Designer({ initialFloor, onBack }) {
                   border:`2px solid ${is?p.color:p.color+"70"}`,borderRadius:7,
                   cursor:mode==="select"?"grab":"default",fontSize:14,
                   boxShadow:is?`0 0 14px ${p.color}55`:isHov?`0 0 10px ${p.color}44`:"none",
-                  zIndex:isHov||is?20:1,transition:"box-shadow 0.15s"}}>
+                  zIndex:isHov||is?20:2,transition:"box-shadow 0.15s"}}>
                 {d.icon}
                 <div style={{position:"absolute",bottom:-4,right:-4,width:7,height:7,borderRadius:"50%",
                   background:STCOL[d.status],border:"1.5px solid #07111e",boxShadow:`0 0 4px ${STCOL[d.status]}`}}/>

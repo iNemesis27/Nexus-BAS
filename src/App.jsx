@@ -159,7 +159,7 @@ function IsoBuilding({ onFloorClick, activeFloor }) {
 
   return (
     <svg viewBox={`0 0 ${VW} ${VH}`} width="100%" height="auto"
-      style={{display:"block",maxWidth:340,margin:"0 auto",overflow:"visible"}}>
+      style={{display:"block",maxWidth:860,margin:"0 auto",overflow:"visible"}}>
       <defs>
         <filter id="glo" x="-50%" y="-50%" width="200%" height="200%">
           <feGaussianBlur stdDeviation="2" result="b"/>
@@ -327,21 +327,21 @@ function Home({ onEnter, onFloor }) {
       <div style={{flex:1,overflowY:"auto",display:"flex",flexDirection:"column",alignItems:"center"}}>
 
         {/* Hero */}
-        <div style={{...fade(0),textAlign:"center",padding:"28px 20px 4px"}}>
-          <div style={{fontSize:8,letterSpacing:"0.26em",color:"#00e5ff40",marginBottom:8}}>
+        <div style={{...fade(0),textAlign:"center",padding:"40px 20px 8px",width:"100%",maxWidth:900,alignSelf:"center",boxSizing:"border-box"}}>
+          <div style={{fontSize:10,letterSpacing:"0.26em",color:"#00e5ff40",marginBottom:10}}>
             196 W HOUSTON ST · WEST VILLAGE · NYC
           </div>
-          <div style={{fontSize:26,fontWeight:900,color:"#e2e8f0",lineHeight:1.1,letterSpacing:"0.02em"}}>
+          <div style={{fontSize:"clamp(28px,4vw,52px)",fontWeight:900,color:"#e2e8f0",lineHeight:1.05,letterSpacing:"0.02em"}}>
             SMART BUILDING<br/>
             <span style={{color:"#00e5ff"}}>CONTROL CENTER</span>
           </div>
-          <div style={{fontSize:8,color:"#2a5070",marginTop:8,letterSpacing:"0.12em"}}>
+          <div style={{fontSize:11,color:"#2a5070",marginTop:12,letterSpacing:"0.12em"}}>
             7,200 SF · 5 LEVELS · {DEMO.length} DEVICES · ELEVATOR · 2-CAR GARAGE
           </div>
         </div>
 
         {/* ── 3D BUILDING ── */}
-        <div style={{...fade(0.08),width:"100%",padding:"12px 16px 4px",boxSizing:"border-box"}}>
+        <div style={{...fade(0.08),width:"100%",maxWidth:900,alignSelf:"center",padding:"16px 24px 8px",boxSizing:"border-box"}}>
           <IsoBuilding
             onFloorClick={fl=>{ setActive(fl); onFloor(fl); }}
             activeFloor={active}
@@ -354,8 +354,8 @@ function Home({ onEnter, onFloor }) {
         </div>
 
         {/* ── FLOOR CARDS ── */}
-        <div style={{...fade(0.15),display:"flex",gap:7,padding:"0 14px 12px",
-          overflowX:"auto",width:"100%",boxSizing:"border-box",scrollbarWidth:"none"}}>
+        <div style={{...fade(0.15),display:"flex",gap:10,padding:"0 24px 16px",
+          flexWrap:"wrap",justifyContent:"center",width:"100%",maxWidth:900,alignSelf:"center",boxSizing:"border-box"}}>
           {FL.map(fl=>{
             const devs=DEMO.filter(d=>d.floor===fl);
             const on=devs.filter(d=>d.status==="online").length;
@@ -364,18 +364,18 @@ function Home({ onEnter, onFloor }) {
             const ia=active===fl;
             return (
               <div key={fl} onClick={()=>{ setActive(fl); onFloor(fl); }}
-                style={{flexShrink:0,padding:"10px 12px",borderRadius:9,cursor:"pointer",
+                style={{flexShrink:0,padding:"14px 20px",borderRadius:9,cursor:"pointer",
                   background:ia?"#0d2540":"#080f1c",
                   border:`1px solid ${ia?"#00e5ff":"#0e2840"}`,
-                  transition:"all 0.15s",minWidth:72,textAlign:"center",
-                  boxShadow:ia?`0 0 12px #00e5ff22`:"none"}}>
-                <div style={{fontSize:13,fontWeight:700,color:ia?"#00e5ff":"#e2e8f0",marginBottom:2}}>{fl}</div>
-                <div style={{fontSize:7,color:"#336699",marginBottom:6}}>{FLAB[fl]}</div>
-                <div style={{display:"flex",gap:4,justifyContent:"center"}}>
-                  {on>0  && <span style={{fontSize:8,color:"#69ff47"}}>●{on}</span>}
-                  {wa>0  && <span style={{fontSize:8,color:"#ffb300"}}>●{wa}</span>}
-                  {of>0  && <span style={{fontSize:8,color:"#ff6e6e"}}>●{of}</span>}
-                  {devs.length===0 && <span style={{fontSize:8,color:"#1e4060"}}>—</span>}
+                  transition:"all 0.15s",minWidth:100,flex:1,textAlign:"center",
+                  boxShadow:ia?`0 0 16px #00e5ff33`:"none"}}>
+                <div style={{fontSize:18,fontWeight:700,color:ia?"#00e5ff":"#e2e8f0",marginBottom:3}}>{fl}</div>
+                <div style={{fontSize:9,color:"#336699",marginBottom:8}}>{FLAB[fl]}</div>
+                <div style={{display:"flex",gap:6,justifyContent:"center"}}>
+                  {on>0  && <span style={{fontSize:10,color:"#69ff47"}}>●{on}</span>}
+                  {wa>0  && <span style={{fontSize:10,color:"#ffb300"}}>●{wa}</span>}
+                  {of>0  && <span style={{fontSize:10,color:"#ff6e6e"}}>●{of}</span>}
+                  {devs.length===0 && <span style={{fontSize:10,color:"#1e4060"}}>—</span>}
                 </div>
               </div>
             );
@@ -383,8 +383,8 @@ function Home({ onEnter, onFloor }) {
         </div>
 
         {/* ── PROTOCOL GRID ── */}
-        <div style={{...fade(0.2),display:"grid",gridTemplateColumns:"1fr 1fr",gap:7,
-          padding:"0 14px 12px",width:"100%",boxSizing:"border-box"}}>
+        <div style={{...fade(0.2),display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:10,
+          padding:"0 24px 16px",width:"100%",maxWidth:900,alignSelf:"center",boxSizing:"border-box"}}>
           {Object.entries(PROTOCOLS).map(([k,p])=>{
             const cnt=DEMO.filter(d=>d.protocol===k).length;
             return (
@@ -393,32 +393,32 @@ function Home({ onEnter, onFloor }) {
                 border:`1px solid ${p.color}22`}}>
                 <div style={{width:10,height:10,borderRadius:3,background:p.color,
                   boxShadow:`0 0 7px ${p.color}88`,flexShrink:0}}/>
-                <span style={{fontSize:9,color:"#7a9ab8",flex:1}}>{p.label}</span>
-                <span style={{fontSize:11,color:p.color,fontWeight:700}}>{cnt}</span>
+                <span style={{fontSize:11,color:"#7a9ab8",flex:1}}>{p.label}</span>
+                <span style={{fontSize:14,color:p.color,fontWeight:700}}>{cnt}</span>
               </div>
             );
           })}
         </div>
 
         {/* ── STAT TILES ── */}
-        <div style={{...fade(0.25),display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:7,
-          padding:"0 14px 14px",width:"100%",boxSizing:"border-box"}}>
+        <div style={{...fade(0.25),display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10,
+          padding:"0 24px 20px",width:"100%",maxWidth:900,alignSelf:"center",boxSizing:"border-box"}}>
           {[
             {label:"DEVICES",val:DEMO.length,    color:"#00e5ff"},
             {label:"ONLINE", val:online,          color:"#69ff47"},
             {label:"ALERTS", val:warning+offline, color:"#ffb300"},
           ].map(s=>(
-            <div key={s.label} style={{padding:"12px 8px",background:"#080f1c",borderRadius:9,
+            <div key={s.label} style={{padding:"20px 12px",background:"#080f1c",borderRadius:9,
               border:`1px solid ${s.color}1a`,textAlign:"center"}}>
-              <div style={{fontSize:22,fontWeight:900,color:s.color,lineHeight:1,
-                filter:`drop-shadow(0 0 8px ${s.color}55)`}}>{s.val}</div>
-              <div style={{fontSize:7,color:s.color+"66",marginTop:4,letterSpacing:"0.1em"}}>{s.label}</div>
+              <div style={{fontSize:"clamp(28px,3vw,48px)",fontWeight:900,color:s.color,lineHeight:1,
+                filter:`drop-shadow(0 0 10px ${s.color}55)`}}>{s.val}</div>
+              <div style={{fontSize:10,color:s.color+"66",marginTop:6,letterSpacing:"0.1em"}}>{s.label}</div>
             </div>
           ))}
         </div>
 
         {/* ── FULL-WIDTH CTA ── */}
-        <div style={{...fade(0.3),padding:"0 14px 24px",width:"100%",boxSizing:"border-box"}}>
+        <div style={{...fade(0.3),padding:"0 24px 32px",width:"100%",maxWidth:900,alignSelf:"center",boxSizing:"border-box"}}>
           <button onClick={onEnter} style={{width:"100%",padding:"15px",fontSize:11,fontWeight:700,
             letterSpacing:"0.12em",background:"linear-gradient(135deg,#00e5ff,#0070f3)",color:"#04090f",
             border:"none",borderRadius:9,cursor:"pointer",fontFamily:"inherit",

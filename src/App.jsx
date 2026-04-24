@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
+import Portal from "./Portal";
 
 // ── CONSTANTS ──────────────────────────────────────────────────────────────────
 const PROTOCOLS = {
@@ -270,7 +271,7 @@ function Ticker({ onDeviceClick }) {
 }
 
 // ── HOME ──────────────────────────────────────────────────────────────────────
-function Home({ onEnter, onFloor }) {
+function Home({ onEnter, onFloor, onPortal }) {
   const [active, setActive] = useState(null);
   const [in_, setIn]        = useState(false);
   useEffect(()=>{ setTimeout(()=>setIn(true),80); },[]);
@@ -315,6 +316,11 @@ function Home({ onEnter, onFloor }) {
               </div>
             ))}
           </div>
+          <button onClick={onPortal} style={{padding:"8px 14px",fontSize:9,fontWeight:700,letterSpacing:"0.08em",
+            background:"#081521",color:"#00e5ff",border:"1px solid #00e5ff33",
+            borderRadius:7,cursor:"pointer",fontFamily:"inherit",whiteSpace:"nowrap"}}>
+            PORTAL
+          </button>
           <button onClick={onEnter} style={{padding:"8px 14px",fontSize:9,fontWeight:700,letterSpacing:"0.08em",
             background:"linear-gradient(135deg,#00e5ff,#0070f3)",color:"#04090f",
             border:"none",borderRadius:7,cursor:"pointer",fontFamily:"inherit",whiteSpace:"nowrap"}}>
@@ -846,12 +852,28 @@ function Designer({ initialFloor, onBack }) {
 
 // ── ROOT ──────────────────────────────────────────────────────────────────────
 export default function App() {
-  const [page,  setPage]  = useState("home");
+  const getPageFromPath = () => window.location.pathname === "/portal" ? "portal" : "home";
+  const [page,  setPage]  = useState(getPageFromPath);
   const [tFloor,setTFloor]= useState("G");
 
   const go = fl => { if(fl) setTFloor(fl); setPage("designer"); };
 
+  useEffect(() => {
+    const syncPage = () => setPage(getPageFromPath());
+    window.addEventListener("popstate", syncPage);
+    return () => window.removeEventListener("popstate", syncPage);
+  }, []);
+
+  useEffect(() => {
+    const pathname = page === "portal" ? "/portal" : "/";
+    if (window.location.pathname !== pathname) {
+      window.history.pushState({}, "", pathname);
+    }
+  }, [page]);
+
   return page==="designer"
     ? <Designer initialFloor={tFloor} onBack={()=>setPage("home")}/>
-    : <Home onEnter={()=>go(null)} onFloor={go}/>;
+    : page==="portal"
+      ? <Portal />
+      : <Home onEnter={()=>go(null)} onFloor={go} onPortal={()=>setPage("portal")}/>;
 }

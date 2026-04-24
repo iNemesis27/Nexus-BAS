@@ -1,5 +1,6 @@
-import { useState, useEffect, useRef, useCallback } from "react";
-import Portal from "./Portal";
+import { lazy, Suspense, useState, useEffect, useRef, useCallback } from "react";
+
+const Portal = lazy(() => import("./Portal"));
 
 // ── CONSTANTS ──────────────────────────────────────────────────────────────────
 const PROTOCOLS = {
@@ -874,6 +875,16 @@ export default function App() {
   return page==="designer"
     ? <Designer initialFloor={tFloor} onBack={()=>setPage("home")}/>
     : page==="portal"
-      ? <Portal />
+      ? (
+        <Suspense fallback={
+          <div style={{ minHeight: "100vh", background: "#04090f", display: "flex",
+            alignItems: "center", justifyContent: "center" }}>
+            <div style={{ color: "#00e5ff", fontFamily: "JetBrains Mono, monospace",
+              fontSize: 11, letterSpacing: "0.1em" }}>LOADING PORTAL...</div>
+          </div>
+        }>
+          <Portal />
+        </Suspense>
+      )
       : <Home onEnter={()=>go(null)} onFloor={go} onPortal={()=>setPage("portal")}/>;
 }

@@ -1,13 +1,12 @@
-
 import NavBar from "./components/NavBar";
 
 const FEATURES = [
-  { icon: "⬡", title: "Multi-protocol support", desc: "Z-Wave, Zigbee, KNX, BACnet, REST, MQTT — all managed from one interface.", color: "#00e5ff" },
-  { icon: "◈", title: "Live floor plan designer", desc: "Drag and drop devices onto real blueprint floor plans. See your building in real time.", color: "#69ff47" },
-  { icon: "◉", title: "Multi-building management", desc: "Manage multiple properties from a single admin dashboard. Assign teams and clients.", color: "#b388ff" },
-  { icon: "▣", title: "Client request routing", desc: "Clients submit requests through a self-serve portal. Auto-route to the right staff member.", color: "#ffb300" },
-  { icon: "◎", title: "Plugin integrations", desc: "Connect Alexa, Google Home, Apple HomeKit, IFTTT, and custom REST/MQTT endpoints.", color: "#ff6e6e" },
-  { icon: "⊡", title: "Role-based access", desc: "Admin, Manager, Staff, Client, Viewer — every user sees exactly what they need to.", color: "#ff9a3c" },
+  { icon: "HEX", title: "Multi-protocol support", desc: "Z-Wave, Zigbee, KNX, BACnet, REST, MQTT - all managed from one interface.", color: "#00e5ff" },
+  { icon: "MAP", title: "Live floor plan designer", desc: "Drag and drop devices onto real blueprint floor plans. See your building in real time.", color: "#69ff47" },
+  { icon: "OPS", title: "Multi-building management", desc: "Manage multiple properties from a single admin dashboard. Assign teams and clients.", color: "#b388ff" },
+  { icon: "REQ", title: "Client request routing", desc: "Clients submit requests through a self-serve portal. Auto-route to the right staff member.", color: "#ffb300" },
+  { icon: "API", title: "Plugin integrations", desc: "Connect Alexa, Google Home, Apple HomeKit, IFTTT, and custom REST/MQTT endpoints.", color: "#ff6e6e" },
+  { icon: "ACL", title: "Role-based access", desc: "Admin, Manager, Staff, Client, Viewer - every user sees exactly what they need to.", color: "#ff9a3c" },
 ];
 
 const STATS = [
@@ -26,22 +25,37 @@ export default function Landing({ setView }) {
     font: "'JetBrains Mono', 'Courier New', monospace",
   };
 
+  const scrollToId = (id) => {
+    if (!id) return;
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  const footerAction = (label) => {
+    if (label === "Portal") {
+      setView("portal");
+      return;
+    }
+    if (label === "Home") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+    scrollToId(label.toLowerCase());
+  };
+
   return (
     <div style={{ background: C.bg, color: C.text, fontFamily: C.font, minHeight: "100vh" }}>
-      {/* Grid bg */}
       <div style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none", backgroundImage: `linear-gradient(${C.border}33 1px,transparent 1px),linear-gradient(90deg,${C.border}33 1px,transparent 1px)`, backgroundSize: "40px 40px" }} />
 
       <div style={{ position: "relative", zIndex: 1 }}>
+        <NavBar view="landing" setView={setView} />
 
-        {/* ── HERO ── */}
         <section style={{ padding: "80px 24px 60px", textAlign: "center", maxWidth: 800, margin: "0 auto" }}>
-          {/* Hex logo large */}
           <div style={{ display: "flex", justifyContent: "center", marginBottom: 32 }}>
             <div style={{ position: "relative", width: 80, height: 80 }}>
               <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
-                <polygon points="40,4 74,22 74,58 40,76 6,58 6,22" stroke={C.cyan} strokeWidth="1.5" fill={C.cyan + "10"}/>
-                <polygon points="40,18 58,28 58,48 40,58 22,48 22,28" stroke={C.cyan} strokeWidth="1" fill={C.cyan + "18"} opacity="0.7"/>
-                <polygon points="40,28 50,34 50,46 40,52 30,46 30,34" fill={C.cyan} opacity="0.5"/>
+                <polygon points="40,4 74,22 74,58 40,76 6,58 6,22" stroke={C.cyan} strokeWidth="1.5" fill={C.cyan + "10"} />
+                <polygon points="40,18 58,28 58,48 40,58 22,48 22,28" stroke={C.cyan} strokeWidth="1" fill={C.cyan + "18"} opacity="0.7" />
+                <polygon points="40,28 50,34 50,46 40,52 30,46 30,34" fill={C.cyan} opacity="0.5" />
               </svg>
             </div>
           </div>
@@ -52,23 +66,22 @@ export default function Landing({ setView }) {
             <span style={{ color: C.cyan }}>Fully intelligent.</span>
           </h1>
           <p style={{ fontSize: "clamp(13px, 2vw, 16px)", color: C.text2, lineHeight: 1.8, margin: "0 0 40px", maxWidth: 560, marginLeft: "auto", marginRight: "auto" }}>
-            NexusBAS connects every device in your building — HVAC, lighting, security, access control — into a single intelligent platform. Manage everything from any screen, anywhere.
+            NexusBAS connects every device in your building - HVAC, lighting, security, access control - into a single intelligent platform. Manage everything from any screen, anywhere.
           </p>
 
           <div style={{ display: "flex", gap: 14, justifyContent: "center", flexWrap: "wrap" }}>
             <button onClick={() => setView("portal")} style={{ background: C.cyan, border: "none", color: C.bg, fontFamily: C.font, fontSize: 12, fontWeight: 900, padding: "14px 32px", borderRadius: 6, cursor: "pointer", letterSpacing: "0.1em" }}>
               GET STARTED
             </button>
-            <button onClick={() => setView("features")} style={{ background: "transparent", border: `1px solid ${C.border2}`, color: C.text2, fontFamily: C.font, fontSize: 12, fontWeight: 600, padding: "14px 32px", borderRadius: 6, cursor: "pointer", letterSpacing: "0.1em" }}>
+            <button onClick={() => scrollToId("features")} style={{ background: "transparent", border: `1px solid ${C.border2}`, color: C.text2, fontFamily: C.font, fontSize: 12, fontWeight: 600, padding: "14px 32px", borderRadius: 6, cursor: "pointer", letterSpacing: "0.1em" }}>
               SEE FEATURES
             </button>
           </div>
         </section>
 
-        {/* ── STATS ── */}
         <section style={{ padding: "0 24px 60px", maxWidth: 700, margin: "0 auto" }}>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 12 }}>
-            {STATS.map(s => (
+            {STATS.map((s) => (
               <div key={s.label} style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 8, padding: "20px 12px", textAlign: "center" }}>
                 <div style={{ fontSize: 28, fontWeight: 900, color: C.cyan, fontFamily: C.font, lineHeight: 1 }}>{s.value}</div>
                 <div style={{ fontSize: 9, color: C.text3, marginTop: 6, letterSpacing: "0.12em" }}>{s.label.toUpperCase()}</div>
@@ -77,16 +90,15 @@ export default function Landing({ setView }) {
           </div>
         </section>
 
-        {/* ── FEATURES ── */}
         <section id="features" style={{ padding: "40px 24px 60px", maxWidth: 1100, margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: 40 }}>
             <div style={{ fontSize: 10, color: C.cyan, letterSpacing: "0.25em", marginBottom: 12 }}>CAPABILITIES</div>
             <h2 style={{ fontSize: "clamp(22px,3vw,36px)", fontWeight: 900, color: C.text, margin: 0 }}>Everything your building needs</h2>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 16 }}>
-            {FEATURES.map(f => (
+            {FEATURES.map((f) => (
               <div key={f.title} style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 8, padding: "24px 20px", borderTop: `2px solid ${f.color}` }}>
-                <div style={{ fontSize: 24, color: f.color, marginBottom: 12 }}>{f.icon}</div>
+                <div style={{ fontSize: 20, color: f.color, marginBottom: 12, fontWeight: 700 }}>{f.icon}</div>
                 <div style={{ fontSize: 13, fontWeight: 700, color: C.text, marginBottom: 8 }}>{f.title}</div>
                 <div style={{ fontSize: 11, color: C.text2, lineHeight: 1.7 }}>{f.desc}</div>
               </div>
@@ -94,7 +106,6 @@ export default function Landing({ setView }) {
           </div>
         </section>
 
-        {/* ── ABOUT ── */}
         <section id="about" style={{ padding: "40px 24px 60px", maxWidth: 800, margin: "0 auto" }}>
           <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 12, padding: "40px 36px" }}>
             <div style={{ fontSize: 10, color: C.cyan, letterSpacing: "0.25em", marginBottom: 16 }}>ABOUT</div>
@@ -102,7 +113,7 @@ export default function Landing({ setView }) {
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 32 }}>
               <div>
                 <p style={{ fontSize: 12, color: C.text2, lineHeight: 1.9, margin: 0 }}>
-                  NexusBAS was built from the ground up to handle the complexity of real buildings — multi-floor townhouses, commercial offices, mixed-use developments. Not a toy. Not a demo.
+                  NexusBAS was built from the ground up to handle the complexity of real buildings - multi-floor townhouses, commercial offices, mixed-use developments. Not a toy. Not a demo.
                 </p>
                 <p style={{ fontSize: 12, color: C.text2, lineHeight: 1.9, marginTop: 16 }}>
                   Every feature exists because a real building needed it. From 196 West Houston Street in the West Village to commercial properties across New York City.
@@ -127,7 +138,6 @@ export default function Landing({ setView }) {
           </div>
         </section>
 
-        {/* ── CONTACT ── */}
         <section id="contact" style={{ padding: "40px 24px 80px", maxWidth: 600, margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: 32 }}>
             <div style={{ fontSize: 10, color: C.cyan, letterSpacing: "0.25em", marginBottom: 12 }}>CONTACT</div>
@@ -152,7 +162,6 @@ export default function Landing({ setView }) {
             </div>
           </div>
 
-          {/* Contact details */}
           <div style={{ display: "flex", justifyContent: "center", gap: 32, marginTop: 32 }}>
             {[
               ["Email", "hello@nexusbas.com"],
@@ -167,11 +176,12 @@ export default function Landing({ setView }) {
           </div>
         </section>
 
-        {/* ── FOOTER ── */}
         <footer style={{ borderTop: `1px solid ${C.border}`, padding: "24px", textAlign: "center" }}>
           <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: 20, flexWrap: "wrap", marginBottom: 12 }}>
-            {["Home", "Features", "About", "Contact", "Portal"].map(l => (
-              <button key={l} onClick={() => setView(l.toLowerCase())} style={{ background: "none", border: "none", color: C.text3, fontFamily: C.font, fontSize: 10, cursor: "pointer", letterSpacing: "0.08em" }}>{l}</button>
+            {["Home", "Features", "About", "Contact", "Portal"].map((l) => (
+              <button key={l} onClick={() => footerAction(l)} style={{ background: "none", border: "none", color: C.text3, fontFamily: C.font, fontSize: 10, cursor: "pointer", letterSpacing: "0.08em" }}>
+                {l}
+              </button>
             ))}
           </div>
           <div style={{ fontSize: 9, color: C.text3, letterSpacing: "0.15em" }}>

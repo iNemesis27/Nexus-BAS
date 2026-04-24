@@ -11,16 +11,13 @@ const AdminDashboard = lazy(() => import("./AdminDashboard"));
 
 function LoadingScreen({ label = "LOADING..." }) {
   return (
-    <div style={{ minHeight: "100vh", background: "#04090f", display: "flex",
-      alignItems: "center", justifyContent: "center" }}>
-      <div style={{ color: "#00e5ff", fontFamily: "JetBrains Mono, monospace",
-        fontSize: 11, letterSpacing: "0.1em" }}>{label}</div>
+    <div style={{ minHeight: "100vh", background: "#04090f", display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <div style={{ color: "#00e5ff", fontFamily: "JetBrains Mono, monospace", fontSize: 11, letterSpacing: "0.1em" }}>{label}</div>
     </div>
   );
 }
 
 export default function App() {
-  const publicViews = new Set(["landing", "about", "features", "contact", "login"]);
   const getViewFromPath = () => {
     if (window.location.pathname === "/portal") return "portal";
     if (window.location.pathname === "/admin") return "admin";
@@ -29,6 +26,7 @@ export default function App() {
     if (window.location.pathname === "/designer") return "designer";
     return "landing";
   };
+
   const [view, setView] = useState(getViewFromPath);
   const [targetFloor, setTargetFloor] = useState("G");
   const userRole = ROLES.ADMIN;
@@ -53,6 +51,7 @@ export default function App() {
       view === "integrations" ? "/integrations" :
       view === "designer" ? "/designer" :
       "/";
+
     if (window.location.pathname !== pathname) {
       window.history.pushState({}, "", pathname);
     }
@@ -60,23 +59,15 @@ export default function App() {
 
   return (
     <Suspense fallback={<LoadingScreen label={view === "portal" ? "LOADING PORTAL..." : "LOADING..."} />}>
-      {publicViews.has(view) && (
-        <Landing setView={setView} view={view} />
-      )}
-      {view !== "landing" && !publicViews.has(view) && (
-        <NavBar view={view} setView={setView} userRole="admin" userName="Rauni Andre" />
+      {view === "landing" && <Landing setView={setView} />}
+      {view !== "landing" && (
+        <NavBar view={view} setView={setView} userRole={userRole} userName={userName} />
       )}
       {view === "portal" && <Portal setView={setView} userRole={userRole} />}
-      {view === "designer" && (
-        <Designer
-          setView={setView}
-          initialFloor={targetFloor}
-          onBack={() => setView("landing")}
-        />
-      )}
+      {view === "designer" && <Designer setView={setView} initialFloor={targetFloor} onBack={() => setView("landing")} />}
       {view === "building-editor" && <BuildingEditor setView={setView} />}
       {view === "integrations" && <Integrations setView={setView} />}
-      {view === "admin" && <AdminDashboard setView={setView} />}
+      {view === "admin" && <AdminDashboard setView={setView} openDesigner={openDesigner} />}
     </Suspense>
   );
 }

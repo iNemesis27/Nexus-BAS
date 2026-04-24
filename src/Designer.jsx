@@ -1,5 +1,5 @@
 import { useCallback, useRef, useState } from "react";
-import { DEMO, DEVICE_TYPES, FLOOR_DATA, FL, FLAB, PROTOCOLS, STCOL } from "./constants";
+import { DEMO, DEVICE_ICON_FIX, DEVICE_TYPES, FLOOR_DATA, FL, FLAB, PROTOCOLS, STCOL } from "./constants";
 import { FLOOR_PLANS } from "./floorPlans";
 
 let _uid = 4000;
@@ -168,7 +168,7 @@ export default function Designer({ initialFloor, onBack }) {
               style={{flexShrink:0,display:"flex",alignItems:"center",gap:5,padding:"5px 9px",borderRadius:7,
                 background:a?p.color+"25":"#0d1e30",
                 border:`1px solid ${a?p.color:p.color+"30"}`,cursor:"pointer",transition:"all 0.12s"}}>
-              <span style={{fontSize:13}}>{dt.icon}</span>
+              <span style={{fontSize:10,fontWeight:900,color:p.color,fontFamily:"monospace"}}>{DEVICE_ICON_FIX[dt.id] || dt.icon}</span>
               <span style={{fontSize:8,color:a?"#e2e8f0":"#7a9ab8",whiteSpace:"nowrap"}}>{dt.label}</span>
             </div>
           );
@@ -291,14 +291,16 @@ export default function Designer({ initialFloor, onBack }) {
                 onMouseDown={e=>startDrag(e,d)}
                 onMouseEnter={e=>{ if(mode==="select") setHov({dev:d}); }}
                 onMouseLeave={()=>setHov(null)}
-                style={{position:"absolute",left:d.x,top:d.y,width:32,height:32,
+                style={{position:"absolute",left:d.x,top:d.y,width:36,height:36,
                   display:"flex",alignItems:"center",justifyContent:"center",
                   background:is?p.color+"28":"#0d1e30",
                   border:`2px solid ${is?p.color:p.color+"70"}`,borderRadius:7,
                   cursor:mode==="select"?"grab":"default",fontSize:14,
                   boxShadow:is?`0 0 14px ${p.color}55`:isHov?`0 0 10px ${p.color}44`:"none",
                   zIndex:isHov||is?20:1,transition:"box-shadow 0.15s"}}>
-                {d.icon}
+                <span style={{fontSize:10,fontWeight:900,color:p.color,fontFamily:"monospace"}}>
+                  {DEVICE_ICON_FIX[d.type] || d.icon}
+                </span>
                 <div style={{position:"absolute",bottom:-4,right:-4,width:7,height:7,borderRadius:"50%",
                   background:STCOL[d.status],border:"1.5px solid #07111e",boxShadow:`0 0 4px ${STCOL[d.status]}`}}/>
                 <div style={{position:"absolute",top:-9,left:"50%",transform:"translateX(-50%)",
@@ -321,7 +323,7 @@ export default function Designer({ initialFloor, onBack }) {
                   }}>
                     {/* Header */}
                     <div style={{display:"flex",alignItems:"center",gap:7,marginBottom:8,paddingBottom:7,borderBottom:`1px solid ${p.color}22`}}>
-                      <span style={{fontSize:16}}>{d.icon}</span>
+                      <span style={{fontSize:10,fontWeight:900,color:p.color,fontFamily:"monospace"}}>{DEVICE_ICON_FIX[d.type] || d.icon}</span>
                       <div>
                         <div style={{fontSize:10,fontWeight:700,color:"#e2e8f0",whiteSpace:"nowrap"}}>{d.label}</div>
                         <div style={{fontSize:7,color:p.color,marginTop:1}}>{p.label}</div>
@@ -364,7 +366,7 @@ export default function Designer({ initialFloor, onBack }) {
             <div style={{width:36,height:4,borderRadius:2,background:"#1a3050",margin:"0 auto 16px"}}/>
             <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:14}}>
               <div style={{display:"flex",alignItems:"center",gap:11}}>
-                <span style={{fontSize:26}}>{lv.icon}</span>
+                <span style={{fontSize:12,fontWeight:900,color:p.color,fontFamily:"monospace"}}>{DEVICE_ICON_FIX[lv.type] || lv.icon}</span>
                 <div>
                   <div style={{fontSize:13,color:"#e2e8f0",fontWeight:700}}>{lv.label}</div>
                   <div style={{fontSize:8,color:p.color,marginTop:1}}>{p.label} · {FLAB[lv.floor]}</div>
